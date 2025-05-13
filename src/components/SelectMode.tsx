@@ -1,14 +1,11 @@
 import { Button, ButtonGroup } from "@chakra-ui/react";
 import { useState } from "react";
-// import { usePomodoro } from "../hooks/usePomodoro";
+import { usePomodoro } from "../hooks/usePomodoro";
+import { SessionType } from "../type/SessionType";
 
-type Props = {
-  setMode: (mode: string) => void;
-};
-
-function SelectMode({ setMode }: Props) {
-  // const {setSessionType} = usePomodoro();
-  const [active, setActive] = useState<number | null>(null);
+function SelectMode() {
+  const { setSessionType } = usePomodoro();
+  const [active, setActive] = useState<number | null>(0);
   return (
     <>
       <ButtonGroup isAttached variant="outline" mt={"20px"}>
@@ -17,7 +14,7 @@ function SelectMode({ setMode }: Props) {
             key={i}
             onClick={() => {
               setActive(i);
-              setMode(n);
+              setSessionType(n as SessionType);
             }}
             p={1}
             border={active === i ? "2px solid" : "1px solid"}

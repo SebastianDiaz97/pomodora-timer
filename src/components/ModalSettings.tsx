@@ -10,19 +10,30 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Text,
-  useDisclosure,
+  useDisclosure
 } from "@chakra-ui/react";
 import { CiSettings } from "react-icons/ci";
+import { usePomodoro } from "../hooks/usePomodoro";
 import InputNumber from "./InputNumber";
 
-
 function ModalSettings() {
-  
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    pauseTimer,
+    timePomodoro,
+    setTimePomodoro,
+    timeSb,
+    setTimeSb,
+    timeLb,
+    setTimeLb,
+  } = usePomodoro();
   return (
     <>
-      <Button onClick={onOpen}>
+      <Button
+        onClick={() => {
+          onOpen(), pauseTimer();
+        }}
+      >
         <CiSettings />
         Settings
       </Button>
@@ -34,18 +45,24 @@ function ModalSettings() {
           <ModalCloseButton />
           <ModalBody>
             <Heading>Time (minutes)</Heading>
-            <Grid templateColumns={"repeat(3, 1fr)"}>
+            <Grid templateColumns={"repeat(3, 1fr)"} mt={6}>
               <GridItem w={"100%"}>
-                <Text>Pomodoro</Text>
-                <InputNumber defaultValue={25} />
+                <InputNumber
+                  defaultValue={timePomodoro / 60}
+                  change={setTimePomodoro}
+                >
+                  Pomodoro
+                </InputNumber>
               </GridItem>
               <GridItem w={"100%"}>
-                <Text>Short Break</Text>
-                <InputNumber defaultValue={25} />
+                <InputNumber defaultValue={timeSb / 60} change={setTimeSb}>
+                  Short Break
+                </InputNumber>
               </GridItem>
               <GridItem w={"100%"}>
-                <Text>Long Break</Text>
-                <InputNumber defaultValue={25} />
+                <InputNumber defaultValue={timeLb / 60} change={setTimeLb}>
+                  Long Break
+                </InputNumber>
               </GridItem>
             </Grid>
           </ModalBody>
@@ -54,7 +71,6 @@ function ModalSettings() {
             <Button colorScheme="blue" mr={3} onClick={onClose}>
               Close
             </Button>
-            <Button variant="ghost">Secondary Action</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

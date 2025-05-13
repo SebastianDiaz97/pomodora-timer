@@ -7,7 +7,10 @@ export const PomodoroProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
-  const [time, setTime] = useState(25 * 60); // 25 minutos por defecto
+  const [timePomodoro, setTimePomodoro] = useState(25 * 60);
+  const [timeSb, setTimeSb] = useState(5 * 60);
+  const [timeLb, setTimeLb] = useState(15 * 60);
+  const [time, setTime] = useState(timePomodoro);
   const [isRunning, setIsRunning] = useState(false);
   const [sessionType, setSessionType] = useState<SessionType>("Pomodoro");
 
@@ -17,30 +20,36 @@ export const PomodoroProvider = ({
     if (isRunning) {
       interval = setInterval(() => {
         setTime((prev) => (prev > 0 ? prev - 1 : 0));
-      }, 1000);
+      }, 10);
     }
 
     return () => clearInterval(interval);
   }, [isRunning]);
 
   useEffect(() => {
-    if (sessionType === "Pomodoro") setTime(25 * 60);
-    if (sessionType === "Short Break") setTime(5 * 60);
-    if (sessionType === "Long Break") setTime(15 * 60);
-  }, [sessionType]);
+    if (sessionType === "Pomodoro") setTime(timePomodoro);
+    if (sessionType === "Short Break") setTime(timeSb);
+    if (sessionType === "Long Break") setTime(timeLb);
+  }, [sessionType, timePomodoro, timeSb, timeLb]);
 
   const startTimer = () => setIsRunning(true);
   const pauseTimer = () => setIsRunning(false);
   const resetTimer = () => {
     setIsRunning(false);
-    if (sessionType === "Pomodoro") setTime(25 * 60);
-    if (sessionType === "Short Break") setTime(5 * 60);
-    if (sessionType === "Long Break") setTime(15 * 60);
+    if (sessionType === "Pomodoro") setTime(timePomodoro);
+    if (sessionType === "Short Break") setTime(timeSb);
+    if (sessionType === "Long Break") setTime(timeLb);
   };
 
   return (
     <PomodoroContext.Provider
       value={{
+        timePomodoro,
+        setTimePomodoro,
+        timeSb,
+        setTimeSb,
+        timeLb,
+        setTimeLb,
         time,
         isRunning,
         sessionType,

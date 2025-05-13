@@ -2,9 +2,11 @@
 import { createContext } from "react";
 import { SessionType } from "../type/SessionType";
 
-// type SessionType = "work" | "shortBreak" | "longBreak";
 
 interface PomodoroContextProps {
+  timePomodoro: number;
+  timeSb: number;
+  timeLb: number;
   time: number;
   isRunning: boolean;
   sessionType: SessionType;
@@ -12,6 +14,9 @@ interface PomodoroContextProps {
   pauseTimer: () => void;
   resetTimer: () => void;
   setSessionType: (type: SessionType) => void;
+  setTimePomodoro: (type: number) => void;
+  setTimeSb: (type: number) => void;
+  setTimeLb: (type: number) => void;
 }
 
 export const PomodoroContext = createContext<PomodoroContextProps | undefined>(

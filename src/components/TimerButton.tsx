@@ -1,4 +1,5 @@
 import { Button } from "@chakra-ui/react";
+import { usePomodoro } from "../hooks/usePomodoro";
 
 type Props = { children: string; onClick: () => void };
 
@@ -16,7 +17,8 @@ function colorButton(children: string) {
   }
 }
 
-function TimerButton({ children, onClick}: Props) {
+function TimerButton({ children, onClick }: Props) {
+  const { isRunning } = usePomodoro();
   const color = colorButton(children);
   return (
     <Button
@@ -28,6 +30,13 @@ function TimerButton({ children, onClick}: Props) {
       color={"white"}
       _hover={{ bg: `${color}.500` }}
       onClick={onClick}
+      isDisabled={
+        children === "Reset"
+          ? false
+          : children === "Start"
+          ? isRunning
+          : !isRunning
+      }
     >
       {children}
     </Button>
