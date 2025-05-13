@@ -1,0 +1,1 @@
+export type SessionType = "Pomodoro" | "Short Break" | "Long Break";
